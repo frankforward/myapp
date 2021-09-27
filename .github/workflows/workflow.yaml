@@ -1,0 +1,36 @@
+name: Release
+on:
+  push:
+    branches:
+      - '*'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: npm ci and npm run build
+        run: |
+          # npm ci
+          # npm run build:ci
+          echo "Build app"
+        env:
+          KENDO_UI_LICENSE: eyJhbGciOiJSUzI1NiIsInR5cCI6IkxJQyJ9.eyJwcm9kdWN0cyI6W3sidHJpYWwiOmZhbHNlLCJjb2RlIjoiS0VORE9VSVJFQUNUIiwibGljZW5zZUV4cGlyYXRpb25EYXRlIjoxNjk5MTI0NDAwfSx7InRyaWFsIjpmYWxzZSwiY29kZSI6IktFTkRPVUlDT01QTEVURSIsImxpY2Vuc2VFeHBpcmF0aW9uRGF0ZSI6MTY5OTEyNDQwMH0seyJ0cmlhbCI6ZmFsc2UsImNvZGUiOiJLRU5ET1VJVlVFIiwibGljZW5zZUV4cGlyYXRpb25EYXRlIjoxNjk5MTI0NDAwfSx7InRyaWFsIjpmYWxzZSwiY29kZSI6IktFTkRPVUlBTkdVTEFSIiwibGljZW5zZUV4cGlyYXRpb25EYXRlIjoxNjk5MTI0NDAwfV0sImludGVncml0eSI6IlpTbHNhdHFSN1U1U1dSVlo5TDROUEVMRFR4Zz0iLCJsaWNlbnNlSG9sZGVyIjoiZnJhbmsubnlhbXVzYW1iYUBkd3MtZ2xvYmFsLmNvbSIsImlhdCI6MTYzMTYxNjc1OCwiYXVkIjoiZnJhbmsubnlhbXVzYW1iYUBkd3MtZ2xvYmFsLmNvbSJ9.HRbcGTu-rIfiSQKM0uOLHdsuHpoHMHXFihteB_MgW2-L79ibLSLCCbIeHHiFVxaQdkb-cCd8QkLfn2i30K_OL2NP0Qjb0xvVR3BWiLn1nj8AV4xCPFjOmc76eG5u99i-70yeozXqgxdIuGF01GPsQujb5hHaY6q322FFPookfHq5eKf0bdCFnTalxMCxmPFfPOR943yRgHawlGya1QVYUP_Mv9idTjbGpmWpPHWBYoGI8Uc9cE7rkYxvNhXq-OcEb6DqEsTqm-YZcjNY2GPOX3HpzX391Dmmezzt3SDjsO27d01_bziaFo_6c5DctGa1XWQfo89ulsmkU9q2253WaA
